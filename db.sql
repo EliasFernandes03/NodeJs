@@ -13,6 +13,7 @@ INSERT INTO tb_file
 VALUES 
     (1, 'file1'),
     (2, 'file2'),
-    (3, 'file3'),
+    (3, 'file3')
+    ;
 
 
