@@ -50,6 +50,7 @@ app.put('/files/:fileName', (req: Request, res: Response) => {
   try {
     const fileName = req.body.fileName;
     const filePath = path.join(dirPath, req.params.fileName);
+    
     const fileContents = req.body.fileContents;
     fs.writeFileSync(filePath, fileContents);
     res.send(`${req.params.fileName} updated successfully.`);
