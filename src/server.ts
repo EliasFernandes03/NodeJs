@@ -45,12 +45,11 @@ app.post('/files', (req: Request, res: Response) => {
   }
 });
 
-// PUT /files/:fileName - update the contents of a file in the directory
-app.put('/files/:fileName', (req: Request, res: Response) => {
+// PATCH /files/:fileName - update the contents of a file in the directory
+app.patch('/files/:fileName', (req: Request, res: Response) => {
   try {
     const fileName = req.body.fileName;
     const filePath = path.join(dirPath, req.params.fileName);
-    
     const fileContents = req.body.fileContents;
     fs.writeFileSync(filePath, fileContents);
     res.send(`${req.params.fileName} updated successfully.`);
