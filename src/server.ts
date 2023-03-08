@@ -47,7 +47,6 @@ app.post('/rename', (req: Request, res: Response) => {
       res.status(500).send('Error renaming file');
       return;
     }
-    
     res.status(200).send('File renamed successfully');
   });
 });
