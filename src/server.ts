@@ -11,6 +11,11 @@ const app = express();
 // Enable JSON parsing middleware
 app.use(express.json());
 
+interface PatchRequisition {
+  originalName: string;
+  newName: string;
+}
+
 // GET /files - get a list of files in the directory
 app.get('/files', (req: Request, res: Response) => {
   try {
@@ -32,31 +37,19 @@ app.get('/files/:fileName', (req: Request, res: Response) => {
   }
 });
 
-// POST /files - create a new file in the directory
-app.post('/files', (req: Request, res: Response) => {
-  try {
-    const fileName = req.body.fileName;
-    const fileContents = req.body.fileContents;
-    const filePath = path.join(dirPath, fileName);
-    fs.writeFileSync(filePath, fileContents);
-    res.send(`${fileName} created successfully.`);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-// PUT /files/:fileName - update the contents of a file in the directory
-app.put('/files/:fileName', (req: Request, res: Response) => {
-  try {
-    const fileName = req.body.fileName;
-    const filePath = path.join(dirPath, req.params.fileName);
+// POST /rename - rename a file inside the directory
+app.post('/rename', (req: Request, res: Response) => {
+  const { oldName, newName, dirPath } = req.body;
+  
+  fs.rename(`${dirPath}/${oldName}`, `${dirPath}/${newName}`, (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error renaming file');
+      return;
+    }
     
-    const fileContents = req.body.fileContents;
-    fs.writeFileSync(filePath, fileContents);
-    res.send(`${req.params.fileName} updated successfully.`);
-  } catch (error) {
-    res.status(500).send(error);
-  }
+    res.status(200).send('File renamed successfully');
+  });
 });
 
 // DELETE /files/:fileName - delete a file from the directory

@@ -33,31 +33,17 @@ app.get('/files/:fileName', (req, res) => {
         res.status(500).send(error);
     }
 });
-// POST /files - create a new file in the directory
-app.post('/files', (req, res) => {
-    try {
-        const fileName = req.body.fileName;
-        const fileContents = req.body.fileContents;
-        const filePath = path_1.default.join(dirPath, fileName);
-        fs_1.default.writeFileSync(filePath, fileContents);
-        res.send(`${fileName} created successfully.`);
-    }
-    catch (error) {
-        res.status(500).send(error);
-    }
-});
-// PUT /files/:fileName - update the contents of a file in the directory
-app.put('/files/:fileName', (req, res) => {
-    try {
-        const fileName = req.body.fileName;
-        const filePath = path_1.default.join(dirPath, req.params.fileName);
-        const fileContents = req.body.fileContents;
-        fs_1.default.writeFileSync(fileName, fileContents );
-        res.send(`${req.params.fileName} updated successfully.`);
-    }
-    catch (error) {
-        res.status(500).send(error);
-    }
+// POST /rename - rename a file inside the directory
+app.post('/rename', (req, res) => {
+    const { oldName, newName, dirPath } = req.body;
+    fs_1.default.rename(`${dirPath}/${oldName}`, `${dirPath}/${newName}`, (err) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Error renaming file');
+            return;
+        }
+        res.status(200).send('File renamed successfully');
+    });
 });
 // DELETE /files/:fileName - delete a file from the directory
 app.delete('/files/:fileName', (req, res) => {
