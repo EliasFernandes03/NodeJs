@@ -47,11 +47,9 @@ app.post('/rename', (req: Request, res: Response) => {
       res.status(500).send('Error renaming file');
       return;
     }
-    
     res.status(200).send('File renamed successfully');
   });
 });
-
 
 // DELETE /files/:fileName - delete a file from the directory
 app.delete('/files/:fileName', (req: Request, res: Response) => {
